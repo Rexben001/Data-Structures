@@ -27,17 +27,13 @@ class LRUCache:
     def get(self, key):
         if self.contents.length == 0:
             return None
-        current = self.contents.head
-        while current:
-            if key in current.value.keys():
-
-                value = [{keys, current.value[keys]}
-                         for keys in current.value.keys() if key in keys]
-                self.dict = value[0]
-                print(self.dict)
-                return
-            current = current.next
-        return None
+        elif key in self.dict:
+            node = self.dict[key]
+            self.contents.move_to_end(node)
+            # return the nodes value
+            return node.value[1]
+        else:
+            return None
 
     """
     Adds the given key-value pair to the cache. The newly-
@@ -51,12 +47,14 @@ class LRUCache:
     """
 
     def set(self, key, value):
-        self.dict[key] = value
-        if self.count == self.limit and key not in self.contents:
+        if key in self.dict:
+            node = self.dict[key]
+            node.value = (key, value)
+            return
+        if self.limit == self.count:
+            del self.dict[self.contents.head.value[0]]
             self.contents.remove_from_head()
-            self.contents.add_to_tail(self.dict)
-        elif key in self.contents:
-            self.contents[key][value] = self.dict
-        else:
-            self.contents.add_to_tail(self.dict)
-            self.count += 1
+            self.count -= 1
+        self.contents.add_to_tail((key, value))
+        self.dict[key] = self.contents.tail
+        self.count += 1
