@@ -1,7 +1,7 @@
-# from dll_stack import Stack
-# from dll_queue import Queue
-# import sys
-# sys.path.append('../queue_and_stack')
+from dll_stack import Stack
+from dll_queue import Queue
+import sys
+sys.path.append('../queue_and_stack')
 
 
 class BinarySearchTree:
@@ -29,10 +29,10 @@ class BinarySearchTree:
             else:
                 # call the insert func and pass the value (recursion)
                 return self.right.insert(value)
-                
 
     # Return True if the tree contains the value
     # False if it does not
+
     def contains(self, target):
         # check if the target is equal to value, return true
         if target is self.value:
@@ -45,7 +45,7 @@ class BinarySearchTree:
                 # call the contains func and pass the target (recursion)
                 return self.left.contains(target)
         # check if the value is less than the root, move to the right
-        if target > self.value:
+        if target >= self.value:
             if self.right is None:
                 return False
             else:
@@ -72,11 +72,11 @@ class BinarySearchTree:
         if self.value:
             # add the value to cb
             cb(self.value)
-            # check if there is a left leaf, move to left           
+            # check if there is a left leaf, move to left
             if self.left:
                 # call the for_each func on self.left (recursio)
                 self.left.for_each(cb)
-            # check if there is a right leaf, move to right           
+            # check if there is a right leaf, move to right
             if self.right:
                # call the for_each func on self.right (recursio)
                 self.right.for_each(cb)
@@ -86,22 +86,80 @@ class BinarySearchTree:
     # Print all the values in order from low to high
     # Hint:  Use a recursive, depth first traversal
     def in_order_print(self, node):
-        pass
+        # if self.value:
+        #     if node.left:
+        #         node.left.in_order_print(node.left)
+        #     print(self.value)
+        #     if node.right:
+        #         return node.right.in_order_print(node.right)
+        s = Stack()
+        # push the node to the stack
+        s.push(node)
+        # while the len of the stack is greater than 0
+        while s.size:
+            # pop the last element of the stack and add to a variable curr_node
+            curr_node = s.pop()
+            print(curr_node.value)
+
+            # check if there is curr_node.left
+            if curr_node.left:
+                # push curr_node.left to the stack
+                s.push(curr_node.left)
+            # check if there is curr_node.right
+            if curr_node.right:
+                # push curr_node.right to the stack
+                s.push(curr_node.right)
 
     # Print the value of every node, starting with the given node,
     # in an iterative breadth first traversal
+
     def bft_print(self, node):
-        pass
+        # create a Queue
+        q = Queue()
+        # append the node to the queue
+        q.enqueue(node)
+        # while the len of the queue is greater than 0
+        while q.size:
+            # pop the first element of the queue and add to a variable curr_node
+            curr_node = q.dequeue()
+            print(curr_node.value)
+            # check if there is curr_node.left
+            if curr_node.left:
+                # append curr_node.left to the queue
+                q.enqueue(curr_node.left)
+            # check if there is curr_node.right
+            if curr_node.right:
+                # append curr_node.right to the queue
+                q.enqueue(curr_node.right)
 
     # Print the value of every node, starting with the given node,
     # in an iterative depth first traversal
+
     def dft_print(self, node):
-        pass
+         # create a stack
+        s = Stack()
+        # push the node to the stack
+        s.push(node)
+        # while the len of the stack is greater than 0
+        while s.size:
+            # pop the last element of the stack and add to a variable curr_node
+            curr_node = s.pop()
+            print(curr_node.value)
+
+            # check if there is curr_node.left
+            if curr_node.left:
+                # push curr_node.left to the stack
+                s.push(curr_node.left)
+            # check if there is curr_node.right
+            if curr_node.right:
+                # push curr_node.right to the stack
+                s.push(curr_node.right)
 
     # STRETCH Goals -------------------------
     # Note: Research may be required
 
     # Print In-order recursive DFT
+
     def pre_order_dft(self, node):
         pass
 
@@ -112,4 +170,11 @@ class BinarySearchTree:
 
 bb = BinarySearchTree(10)
 bb.insert(20)
+bb.insert(23)
 bb.insert(15)
+bb.insert(5)
+bb.insert(7)
+
+bb.in_order_print(bb)
+bb.bft_print(bb)
+# bb.dft_print(bb)
